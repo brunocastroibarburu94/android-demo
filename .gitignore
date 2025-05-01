@@ -27,3 +27,4 @@ replay_pid*
 .kotlin/
 .gradle/8.2/fileHashes/fileHashes.lock
 .gradle/
+.idea/
