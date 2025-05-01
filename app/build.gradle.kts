@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.health_tracker_app"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.health_tracker_app"
