@@ -28,3 +28,4 @@ replay_pid*
 .gradle/8.2/fileHashes/fileHashes.lock
 .gradle/
 .idea/
+build/reports/problems/problems-report.html
