@@ -35,12 +35,30 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        compose = true
     }
 }
 
 dependencies {
 //https://github.com/KoalaPlot/koalaplot-core Charting lbrary
 //    implementation("io.github.koalaplot:koalaplot-core:0.8.0")
+
+    implementation("androidx.compose.material3:material3:1.3.2") // Material Design 3
+    implementation("androidx.compose.ui:ui-tooling-preview")  // Android Studio Preview support
+    debugImplementation("androidx.compose.ui:ui-tooling")  // Android Studio Preview support
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.8.0")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // Optional - Integration with activities
+    implementation("androidx.activity:activity-compose:1.10.1")
+    // Optional - Integration with ViewModels
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+    // Optional - Integration with LiveData
+    implementation("androidx.compose.runtime:runtime-livedata")
+    // Optional - Integration with RxJava
+    implementation("androidx.compose.runtime:runtime-rxjava2")
+
+    // From before
     implementation("androidx.core:core-ktx:1.16.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
