@@ -1,5 +1,5 @@
-package com.example.health_tracker_app
-
+package com.brunocastroibarburu.health_tracker_app
+//import com.brunocastroibarburu.health_tracker_app.R
 // Fragment Framework
 import android.os.Bundle
 //import android.view.Menu

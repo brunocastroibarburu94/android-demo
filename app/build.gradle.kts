@@ -2,14 +2,15 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
-
+@file:Suppress("UnstableApiUsage")
 android {
-    namespace = "com.example.health_tracker_app"
+    namespace = "com.brunocastroibarburu.health_tracker_app"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.health_tracker_app"
+        applicationId = "com.brunocastroibarburu.health_tracker_app"
         minSdk = 33
+        //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -30,6 +31,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.10"
+    }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -40,9 +46,12 @@ android {
 }
 
 dependencies {
-//https://github.com/KoalaPlot/koalaplot-core Charting lbrary
+//https://github.com/KoalaPlot/koalaplot-core Charting library
 //    implementation("io.github.koalaplot:koalaplot-core:0.8.0")
 
+//    val nav_version = "2.8.9"
+
+    implementation("androidx.navigation:navigation-compose:2.8.9")
     implementation("androidx.compose.material3:material3:1.3.2") // Material Design 3
     implementation("androidx.compose.ui:ui-tooling-preview")  // Android Studio Preview support
     debugImplementation("androidx.compose.ui:ui-tooling")  // Android Studio Preview support

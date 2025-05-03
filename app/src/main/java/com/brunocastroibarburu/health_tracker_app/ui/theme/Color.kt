@@ -1,4 +1,4 @@
-package com.example.happybirthday.ui.theme
+package com.brunocastroibarburu.health_tracker_app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package com.example.health_tracker_app
+package com.brunocastroibarburu.health_tracker_app
 
 import org.junit.Test
 
