@@ -20,6 +20,9 @@ import android.os.Bundle
 // Compose Framework
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement // Required for "Arrangement.Centre"
+//import androidx.compose.foundation.layout.Alignement.CenterHorizontally
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,7 +30,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+
+//  Requred for importing the icons using Icons.Filled.<IconName> and Icons.Outlined.<IconName>
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Face
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+// Reequired to use Material (Apparently its api changes so frequently that this is needed?)
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -39,7 +53,19 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+
+// Required by line "bottomNavState by rememberSaveable"
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+
+//
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 //import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.navigation.compose.rememberNavController
 import com.brunocastroibarburu.health_tracker_app.ui.theme.HealthTrackerApplicationTheme
@@ -134,6 +160,14 @@ fun BottomNavigation() {
 @Composable
 fun SecondaryPage(){} // TODO: Create secondary page to toggle to
 
+data class NavItemState (
+    val title:String,
+    val selectedIcon : ImageVector,
+    val unselectedIcon : ImageVector,
+    val hasBadge: Boolean,
+    val badgeNum : Int
+)
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainPage(modifier:Modifier = Modifier){
@@ -148,13 +182,59 @@ fun MainPage(modifier:Modifier = Modifier){
 //            ) {
 //                Text(text = "Hi ${R.id.nav_home}")
 //           6}
-
+            val items = listOf(
+                NavItemState(
+                    title = "Home",
+                    selectedIcon = Icons.Filled.Home,
+                    unselectedIcon = Icons.Outlined.Home,
+                    hasBadge = false,
+                    badgeNum=0
+                ),
+                NavItemState(
+                    title = "Inbox",
+                    selectedIcon = Icons.Filled.Email,
+                    unselectedIcon = Icons.Outlined.Email,
+                    hasBadge = true,
+                    badgeNum=10
+                ),
+                NavItemState(
+                    title = "Account",
+                    selectedIcon = Icons.Filled.Face,
+                    unselectedIcon = Icons.Outlined.Face,
+                    hasBadge = true,
+                    badgeNum=0
+                ),
+            )
+            var bottomNavState by rememberSaveable { // Importable widget shows if one is in a composable function
+                mutableStateOf(0)
+            }
             Scaffold(
                 topBar = {
                     TopAppBar(title = {Text(text = "Top bar")})
                 },
                 bottomBar = {
-                    BottomNavigation()
+                    //BottomNavigation() // Custom Navigation declared outside
+                    NavigationBar {
+                        items.forEachIndexed{
+                            index,item ->
+                            NavigationBarItem(
+                                selected = bottomNavState==index,
+                                onClick={bottomNavState= index},
+                                icon={
+                                    BadgedBox(badge = {
+                                        if(item.hasBadge) Badge{}
+                                        if(item.badgeNum!=0) Badge{
+                                            Text(text = item.badgeNum.toString())
+                                        }
+                                    }){
+                                        Icon(
+                                            imageVector = if (bottomNavState==index) item.selectedIcon else item.unselectedIcon,
+                                            contentDescription = item.title
+                                        )
+                                    }
+                                })
+                        }
+                    }
                 },
                 floatingActionButton = {
                     FloatingActionButton(onClick = {}) {
@@ -162,60 +242,34 @@ fun MainPage(modifier:Modifier = Modifier){
                     }
                 }
             ) { contentPadding ->
-                Column(modifier.padding(contentPadding)) {
-                    //Column(modifie.padding(contentPadding)) {
-                    Text(text="Hi")
+                Column(
+                    modifier
+                        .padding(contentPadding)
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text=items[bottomNavState].title,
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize=44.sp
+                    )
                 }
             }
         }
-//    }
 
 
 }
 
 //class MainActivity : AppCompatActivity() { //
 class MainActivity : ComponentActivity(){
-
-//    private lateinit var appBarConfiguration: AppBarConfiguration
-//    private lateinit var binding: ActivityMainBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState) // Super init to os.Bundle parent
-//        val navController = rememberNavController()
         val topModifier = Modifier.fillMaxWidth()
         setContent{
         MainPage()
-        //            Text(text = "Hi ${R.id.nav_home}")
         }
-        // Bindings to Activity Main
-        //     binding = ActivityMainBinding.inflate(layoutInflater)
-        //     setContentView(binding.root)
-        //
-        //        setSupportActionBar(binding.appBarMain.toolbar)
-        //
-        //        binding.appBarMain.fab.setOnClickListener { view ->
-        //            Snackbar.make(view, "Replace with your own action!!!", Snackbar.LENGTH_LONG)
-        //                    .setAction("Action", null).show()
-        //        }
-        //        val drawerLayout: DrawerLayout = binding.drawerLayout
-        //        val navView: NavigationView = binding.navView
-        //        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        //        // Passing each menu ID as a set of Ids because each
-        //        // menu should be considered as top level destinations.
-        //        appBarConfiguration = AppBarConfiguration(setOf(
-        //            R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow), drawerLayout)
-        //        setupActionBarWithNavController(navController, appBarConfiguration) // Add navigation bar
-        //        navView.setupWithNavController(navController) // Allows for page navigation
+
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        menuInflater.inflate(R.menu.main, menu)
-//        return true
-//    }
-
-//    override fun onSupportNavigateUp(): Boolean {
-//        val navController = findNavController(R.id.nav_host_fragment_content_main)
-//        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-//    }
 }
